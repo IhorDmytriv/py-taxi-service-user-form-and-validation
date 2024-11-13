@@ -10,13 +10,19 @@ from taxi.models import Driver, Car
 def validate_license_number(license_number):
 
     if len(license_number) != 8:
-        raise ValidationError("License number must consist of exactly 8 characters.")
+        raise ValidationError(
+            "License number must consist of exactly 8 characters."
+        )
 
     elif not license_number[:3].isalpha() or not license_number[:3].isupper():
-        raise ValidationError("The first 3 characters must be uppercase letters.")
+        raise ValidationError(
+            "The first 3 characters must be uppercase letters."
+        )
 
     elif not license_number[-5:].isdigit():
-        raise ValidationError("The last 5 characters must be digits.")
+        raise ValidationError(
+            "The last 5 characters must be digits."
+        )
 
     return license_number
 
@@ -24,11 +30,15 @@ def validate_license_number(license_number):
 class DriverCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Driver
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number", )
+        fields = UserCreationForm.Meta.fields + ("first_name",
+                                                 "last_name",
+                                                 "license_number",
+                                                 )
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
         return validate_license_number(license_number)
+
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
